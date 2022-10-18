@@ -5,7 +5,7 @@ import { sample } from 'lodash';
 
 const users = [...Array(24)].map((_, index) => ({
   id: faker.datatype.uuid(),
-  avatarUrl: `/static/mock-images/avatars/avatar_${index + 1}.jpg`,
+  avatarUrl: `https://www.pngall.com/wp-content/uploads/8/Cardboard-Box-PNG-Picture.png`,
   name: faker.name.findName(),
   company: faker.company.companyName(),
   isVerified: faker.datatype.boolean(),
