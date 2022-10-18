@@ -77,7 +77,7 @@ export default function Register() {
         {mdUp && (
           <SectionStyle>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Manage the job more effectively with Minimal
+              Manage your supplies better with Bookee
             </Typography>
             <img alt="register" src="/static/illustrations/illustration_register.png" />
           </SectionStyle>
@@ -89,17 +89,17 @@ export default function Register() {
               Get started absolutely free.
             </Typography>
 
-            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Free forever. No credit card needed.</Typography>
+            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Free forever. No credit card needed. No email confirmation needed</Typography>
 
             <RegisterForm />
 
             <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-              By registering, I agree to Minimal&nbsp;
-              <Link underline="always" color="text.primary" href="#">
+              By registering, I agree to Bookee &nbsp;
+              <Link underline="always" color="text.primary" href="https://www.youtube.com/watch?v=Z3ZAGBL6UBA&ab_channel=AlbinoBlackSheep">
                 Terms of Service
               </Link>
-              {''}and{''}
-              <Link underline="always" color="text.primary" href="#">
+              {' '}and{' '}
+              <Link underline="always" color="text.primary" href="https://youtu.be/X-KwYX2u8e4?t=9">
                 Privacy Policy
               </Link>
               .
