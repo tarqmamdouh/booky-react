@@ -15,7 +15,7 @@ const authHeaders = () => {
 			'client': Cookies.get('client'),
 			'uid': Cookies.get('uid'),
 			'expiry': Cookies.get('expiry'),
-			'token-type': Cookies.get('token-type')
+			'token-type': Cookies.get('token-type'),
 		}
 	}
 
@@ -42,14 +42,20 @@ export const destroyAuth = () => {
 export async function authRequest(type, url, params = {}, extraHeaders = {}) {
 	return new Promise((resolve, reject) => {
 		// do the request and save the headers after it's done
-		axios[type](url, params, {...authHeaders(), ...extraHeaders}).then(response => {
+		const headers = {...authHeaders(), ...extraHeaders}
+		axios({
+			method: type,
+			url,
+			headers,
+			data: params,
+		}).then(response => {
 			const success = setAuthHeaders(response);
 			if(success) {
 				resolve(response);
 			} else {
 				reject(new Error('Not Authenticated'))
 			}
-		}).catch(error => reject(new Error('Not Authenticated')))
+		}).catch(error => reject(error));
 	});
 }
 
