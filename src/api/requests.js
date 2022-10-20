@@ -32,6 +32,13 @@ export const setAuthHeaders = (response) => {
 	return result;
 }
 
+export const destroyAuth = () => {
+  ['access-token', 'client', 
+   'uid', 'expiry', 'name',
+   'token-type', 'user_id', 
+   'email', 'password'].forEach(header => Cookies.expire(header));
+}
+
 export async function authRequest(type, url, params = {}, extraHeaders = {}) {
 	return new Promise((resolve, reject) => {
 		// do the request and save the headers after it's done

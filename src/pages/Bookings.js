@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { Container, Stack, Typography } from '@mui/material';
 // components
 import Page from '../components/Page';
-import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../sections/@dashboard/bookings';
+import BookingList from '../sections/@dashboard/bookings/BookingList';
 // mock
-import PRODUCTS from '../_mock/products';
+import BOOKINGS from '../_mock/bookings';
 
 // ----------------------------------------------------------------------
 
@@ -21,25 +21,24 @@ export default function EcommerceShop() {
   };
 
   return (
-    <Page title="Dashboard: Products">
+    <Page title="New Booking">
       <Container>
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Products
+          Available Bookings
         </Typography>
 
-        <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
+        {/* <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-            <ProductFilterSidebar
+            <BookingFilterSidebar
               isOpenFilter={openFilter}
               onOpenFilter={handleOpenFilter}
               onCloseFilter={handleCloseFilter}
             />
-            <ProductSort />
+            <BookingSort />
           </Stack>
-        </Stack>
+        </Stack> */}
 
-        <ProductList products={PRODUCTS} />
-        <ProductCartWidget />
+        <BookingList bookings={BOOKINGS} />
       </Container>
     </Page>
   );

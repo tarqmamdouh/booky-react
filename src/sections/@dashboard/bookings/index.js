@@ -1,5 +1,5 @@
-export { default as ProductCard } from './ProductCard';
-export { default as ProductList } from './ProductList';
-export { default as ProductSort } from './ProductSort';
-export { default as ProductCartWidget } from './ProductCartWidget';
-export { default as ProductFilterSidebar } from './ProductFilterSidebar';
+export { default as BookingCard } from './BookingCard';
+export { default as BookingList } from './BookingList';
+export { default as BookingSort } from './BookingSort';
+export { default as BookingCartWidget } from './BookingCartWidget';
+export { default as BookingFilterSidebar } from './BookingFilterSidebar';

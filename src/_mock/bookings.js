@@ -38,7 +38,7 @@ const products = [...Array(24)].map((_, index) => {
 
   return {
     id: faker.datatype.uuid(),
-    cover: `/static/mock-images/products/product_${setIndex}.jpg`,
+    cover: `https://lowshiprate.com/wp-content/uploads/2018/11/logistics-2.png`,
     name: PRODUCT_NAME[index],
     price: faker.datatype.number({ min: 4, max: 99, precision: 0.01 }),
     priceSale: setIndex % 3 ? null : faker.datatype.number({ min: 19, max: 29, precision: 0.01 }),
@@ -50,7 +50,6 @@ const products = [...Array(24)].map((_, index) => {
       (setIndex === 23 && PRODUCT_COLOR.slice(4, 6)) ||
       (setIndex === 24 && PRODUCT_COLOR.slice(5, 6)) ||
       PRODUCT_COLOR,
-    status: sample(['sale', 'new', '', '']),
   };
 });
 
