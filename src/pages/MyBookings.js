@@ -1,7 +1,8 @@
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import moment from 'moment';
 // material
 import {
   Card,
@@ -25,17 +26,16 @@ import Scrollbar from '../components/Scrollbar';
 import Iconify from '../components/Iconify';
 import SearchNotFound from '../components/SearchNotFound';
 import { MyBookingsHead } from '../sections/@dashboard/mybookings';
-// mock
-import USERBOOKINGLIST from '../_mock/user';
+import { myBookings } from '../api/booking';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'title', label: 'Title', alignRight: false },
   { id: 'description', label: 'Description', alignRight: false },
+  { id: 'date', label: 'Date', alignRight: false },
   { id: 'start_at', label: 'Starting At', alignRight: false },
-  { id: 'end_at', label: 'Ending At', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'end_at', label: 'Ending At', alignRight: false }
 ];
 
 // ----------------------------------------------------------------------
@@ -82,6 +82,12 @@ export default function User() {
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  const [userBookingList, setUserBookingList] = useState([]);
+
+  useEffect(() => {
+    myBookings().then((response) => setUserBookingList(response.data.data.map((row) => row.attributes)));
+  }, []);
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -90,7 +96,7 @@ export default function User() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERBOOKINGLIST.map((n) => n.name);
+      const newSelecteds = userBookingList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -121,15 +127,9 @@ export default function User() {
     setPage(0);
   };
 
-  const handleFilterByName = (event) => {
-    setFilterName(event.target.value);
-  };
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userBookingList.length) : 0;
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERBOOKINGLIST.length) : 0;
-
-  const filteredUsers = applySortFilter(USERBOOKINGLIST, getComparator(order, orderBy), filterName);
-
-  const isUserNotFound = filteredUsers.length === 0;
+  const filteredUsers = applySortFilter(userBookingList, getComparator(order, orderBy), filterName);
 
   return (
     <Page title="My Bookings">
@@ -142,14 +142,14 @@ export default function User() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERBOOKINGLIST.length}
+                  rowCount={userBookingList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                    const { id, name, description, start, end } = row;
                     const isItemSelected = selected.indexOf(name) !== -1;
 
                     return (
@@ -166,20 +166,16 @@ export default function User() {
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
+                            <Avatar alt='packages' src='https://www.pngall.com/wp-content/uploads/8/Cardboard-Box-PNG-Picture.png' />
                             <Typography variant="subtitle2" noWrap>
                               {name}
                             </Typography>
                           </Stack>
                         </TableCell>
-                        <TableCell align="left">{company}</TableCell>
-                        <TableCell align="left">{role}</TableCell>
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
-                        <TableCell align="left">
-                          <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}>
-                            {sentenceCase(status)}
-                          </Label>
-                        </TableCell>
+                        <TableCell align="left">{description}</TableCell>
+                        <TableCell align="left">{moment.utc(end).format('DD-MM-YYYY')}</TableCell>
+                        <TableCell align="left">{moment.utc(start).format('hh:mm A')}</TableCell>
+                        <TableCell align="left">{moment.utc(end).format('hh:mm A')}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -189,16 +185,6 @@ export default function User() {
                     </TableRow>
                   )}
                 </TableBody>
-
-                {isUserNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
               </Table>
             </TableContainer>
           </Scrollbar>
@@ -206,7 +192,7 @@ export default function User() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERBOOKINGLIST.length}
+            count={userBookingList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
